@@ -32,7 +32,7 @@ html, body {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
+    color: #bbbbbb;
     display: block;
     transition: 0.3s;
 }
@@ -55,7 +55,7 @@ html, body {
 #main {
     transition: margin-left .5s;
     /* padding: 20px; */
-    margin-left: 250;
+    /* margin-left: 250; */
 }
 
 /* #mySidenav {
