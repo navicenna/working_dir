@@ -13,12 +13,17 @@ html, body {
     max-width: 20%;
     height: 100%;
 } */
+
+.navbar {
+    z-index: 2;
+}
+
 .sidenav {
     height: 100%; /* 100% Full-height */
     /* 0 width - change this with JavaScript */
     width: 250; 
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
+    position: absolute; /* Stay in place */
+    z-index: 9999; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
     background-color: #111; /* Black*/
@@ -67,3 +72,15 @@ html, body {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
 }
+
+ .border-top {
+     border-top: 1px solid #e5e5e5;
+ }
+
+ .border-bottom {
+     border-bottom: 1px solid #e5e5e5;
+ }
+
+ .box-shadow {
+     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+ }
