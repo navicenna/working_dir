@@ -12,40 +12,40 @@ var ViewModel = function () {
 
   // Initialize a list of places in Austin, TX.
   this.locations = ko.observableArray([{
-    title: "Stubb's Bar-B-Q",
-    location: {
-      lat: 30.268949,
-      lng: -97.736112
+      title: "Stubb's Bar-B-Q",
+      location: {
+        lat: 30.268949,
+        lng: -97.736112
+      }
+    },
+    {
+      title: 'Whole Foods Market',
+      location: {
+        lat: 30.271080,
+        lng: -97.751368
+      }
+    },
+    {
+      title: 'Republic Square',
+      location: {
+        lat: 30.267809,
+        lng: -97.747313
+      }
+    },
+    {
+      title: 'Wu Chow',
+      location: {
+        lat: 30.268930,
+        lng: -97.747882
+      }
+    },
+    {
+      title: 'Texas Capitol',
+      location: {
+        lat: 30.275796,
+        lng: -97.740415
+      }
     }
-  },
-  {
-    title: 'Whole Foods Market',
-    location: {
-      lat: 30.271080,
-      lng: -97.751368
-    }
-  },
-  {
-    title: 'Republic Square',
-    location: {
-      lat: 30.267809,
-      lng: -97.747313
-    }
-  },
-  {
-    title: 'Wu Chow',
-    location: {
-      lat: 30.268930,
-      lng: -97.747882
-    }
-  },
-  {
-    title: 'Texas Capitol',
-    location: {
-      lat: 30.275796,
-      lng: -97.740415
-    }
-  } ///ef9cdebf16fb2439540ef6b1fdf77d55
   ]);
   console.log(this.locations());
 
@@ -151,6 +151,33 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   // document.getElementById("main").style.marginLeft = "0";
 }
+
+// TODO: massage the zomato API to return 20 restaurants with high scores
+// TODO: populate the array with the restaurants
+// TODO: create the infowindow thing from one of the existing examples
+
+function test() {
+  $.ajax({
+    url: 'https://developers.zomato.com/api/v2.1/search?count=2&lat=30.268949&lon=-97.736112&radius=3000',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      alert('hello!');
+      console.log(data);
+    },
+    error: function () {
+      alert('foo!');
+    },
+    beforeSend: setHeader
+  });
+}
+
+
+function setHeader(xhr) {
+  var key = 'ef9cdebf16fb2439540ef6b1fdf77d55';
+  xhr.setRequestHeader('user-key', key);
+}
+
 
 
 function main() {
