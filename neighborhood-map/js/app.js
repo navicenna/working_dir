@@ -1,4 +1,6 @@
 var map;
+// var locations = get_restaurants();
+// console.log('after get', locations)
 var markers = [];
 
 var ViewModel = function () {
@@ -11,45 +13,110 @@ var ViewModel = function () {
   this.foo = ko.observable("foobartest");
 
   // Initialize a list of places in Austin, TX.
-  this.locations = ko.observableArray([{
-      title: "Stubb's Bar-B-Q",
-      location: {
-        lat: 30.268949,
-        lng: -97.736112
-      }
-    },
-    {
-      title: 'Whole Foods Market',
-      location: {
-        lat: 30.271080,
-        lng: -97.751368
-      }
-    },
-    {
-      title: 'Republic Square',
-      location: {
-        lat: 30.267809,
-        lng: -97.747313
-      }
-    },
-    {
-      title: 'Wu Chow',
-      location: {
-        lat: 30.268930,
-        lng: -97.747882
-      }
-    },
-    {
-      title: 'Texas Capitol',
-      location: {
-        lat: 30.275796,
-        lng: -97.740415
-      }
-    }
-  ]);
-  console.log(this.locations());
+  // this.locations = ko.observableArray([{
+  //     title: "Stubb's Bar-B-Q",
+  //     location: {
+  //       lat: 30.268949,
+  //       lng: -97.736112
+  //     }
+  //   },
+  //   {
+  //     title: 'Whole Foods Market',
+  //     location: {
+  //       lat: 30.271080,
+  //       lng: -97.751368
+  //     }
+  //   },
+  //   {
+  //     title: 'Republic Square',
+  //     location: {
+  //       lat: 30.267809,
+  //       lng: -97.747313
+  //     }
+  //   },
+  //   {
+    //     title: 'Wu Chow',
+    //     location: {
+      //       lat: 30.268930,
+      //       lng: -97.747882
+      //     }
+      //   },
+      //   {
+  //     title: 'Texas Capitol',
+  //     location: {
+    //       lat: 30.275796,
+  //       lng: -97.740415
+  //     }
+  //   }
+  // ]);
+  // console.log(this.locations());
 
-  this.initMap = function () {
+  // console.log('before get', locations);
+  // get_restaurants();
+  // console.log('after_get', locations);
+  
+  this.get_restaurants = function(callback_initMap) {
+  
+    var count = 12;
+    var lat = 30.268949;
+    var lon = -97.736112;
+    var radius = 5000;
+    var sort = 'rating';
+    var order = 'desc';
+    var url = 'https://developers.zomato.com/api/v2.1/search?count=' + count + 
+      '&lat=' + lat + '&lon=' + lon + '&radius=' + radius + '&sort=' + sort + '&order=' + order;
+  
+  
+    // var response;
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        // alert('hello!');
+        // console.log(data);
+        // response = data;
+        locations = parse_zomato(data);
+        callback_initMap(locations);
+      },
+      error: function () {
+        alert('foo!');
+      },
+      beforeSend: setHeader
+    });
+    return locations;
+  }
+  
+  
+  // Parse Zomato response and extract necessary info for each restaurant
+  function parse_zomato(response) {
+    var parsed_restaurants = [];
+    var restaurants = response.restaurants;
+    
+    restaurants.forEach(element => {
+      // console.log(element);
+      var temp_restaurant = {
+        name: element.restaurant.name,
+        cost: element.restaurant.average_cost_for_two/2,
+        cuisines: element.restaurant.cuisines,
+        rating: element.restaurant.user_rating.aggregate_rating,
+        img: element.restaurant.featured_image,
+        lat: element.restaurant.location.latitude,
+        lon: element.restaurant.location.longitude,
+      }
+      parsed_restaurants.push(temp_restaurant);
+  
+      
+    });
+    return parsed_restaurants;
+  }
+  
+  // This function sets the Ajax request header
+  function setHeader(xhr) {
+    var key = 'ef9cdebf16fb2439540ef6b1fdf77d55';
+    xhr.setRequestHeader('user-key', key);
+  }
+  this.initMap = function (locations) {
     // Constructor creates a new map - only center and zoom are required.
     map = new google.maps.Map(document.getElementById('map'), {
       center: {
@@ -59,15 +126,16 @@ var ViewModel = function () {
       zoom: 14,
       mapTypeControl: false
     });
-
-
+    
+    
     var largeInfowindow = new google.maps.InfoWindow();
-
+    
     // The following group uses the location array to create an array of markers on initialize.
-    for (var i = 0; i < this.locations().length; i++) {
+    for (var i = 0; i < locations.length; i++) {
+      console.log(i, locations[i]);
       // Get the position from the location array.
-      var position = this.locations()[i].location;
-      var title = this.locations()[i].title;
+      var position = locations[i].location;
+      var title = locations[i].title;
       // Create a marker per location, and put into markers array.
       var marker = new google.maps.Marker({
         position: position,
@@ -86,9 +154,10 @@ var ViewModel = function () {
     document.getElementById('show-listings').addEventListener('click', showListings);
     document.getElementById('hide-listings').addEventListener('click', hideListings);
   }
-
-  this.initMap();
-
+  
+  get_restaurants(this.initMap);
+  // console.log('after map', locations);
+  
   // This function populates the infowindow when the marker is clicked. We'll only allow
   // one infowindow which will open at the marker that is clicked, and populate based
   // on that markers position.
@@ -108,7 +177,7 @@ var ViewModel = function () {
   }
 
   this.bar = ko.observable("foo");
-  console.log(this.bar());
+  // console.log(this.bar());
 
 }
 
@@ -142,7 +211,7 @@ function toggleNav() {
   var foo = 1;
   foo = 2;
   var bar = document.getElementById("mySidenav").classList;
-  console.log(bar);
+  // console.log(bar);
   // document.getElementById("main").style.marginLeft = "320px";
 }
 
@@ -156,27 +225,9 @@ function closeNav() {
 // TODO: populate the array with the restaurants
 // TODO: create the infowindow thing from one of the existing examples
 
-function test() {
-  $.ajax({
-    url: 'https://developers.zomato.com/api/v2.1/search?count=2&lat=30.268949&lon=-97.736112&radius=3000',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      alert('hello!');
-      console.log(data);
-    },
-    error: function () {
-      alert('foo!');
-    },
-    beforeSend: setHeader
-  });
-}
-
-
-function setHeader(xhr) {
-  var key = 'ef9cdebf16fb2439540ef6b1fdf77d55';
-  xhr.setRequestHeader('user-key', key);
-}
+// G
+var response;
+var results;
 
 
 
