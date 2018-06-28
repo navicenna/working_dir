@@ -2,6 +2,7 @@ var map;
 // var locations = get_restaurants();
 // console.log('after get', locations)
 var markers = [];
+var loc;
 
 var ViewModel = function () {
 
@@ -36,9 +37,9 @@ var ViewModel = function () {
       beforeSend: setHeader
     });
     // return locations;
-  }
-
-
+  }    
+  
+  this.locations_obs = ko.observableArray([]);
   // Parse Zomato response and extract necessary info for each restaurant
   function parse_zomato(response) {
     var parsed_restaurants = [];
@@ -106,15 +107,20 @@ var ViewModel = function () {
 
     document.getElementById('show-listings').addEventListener('click', showListings);
     document.getElementById('hide-listings').addEventListener('click', hideListings);
-  }
-
-  // Get restaurants and initialize the map
+    
+    // Store locations in an obserable array
+    self.locs(locations);
+    // loc = self.locations_obs;
+    // console.log(self.locations_obs()[1]);
+  }  
+  console.log(this.locations_obs()[1]);
   this.get_restaurants(this.initMap);
 
   
   this.bar = ko.observable("foo");
   // console.log(this.bar());
-  
+  console.log(this.locations_obs()[1]);
+  loc = this.locs;
 }
 
 
