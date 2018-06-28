@@ -14,41 +14,36 @@
 
 <body>
 
+    <!-- Top navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom box-shadow fixed-top">
-        <!-- <a class="navbar-brand" href="/">Project Planner</a> -->
         <a class="btn btn-light" onclick="toggleNav()">Open Sidebar</a>
-        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button> -->
 
-        <!-- <div class="collapse navbar-collapse"> -->
         <div class="form-inline my-2 my-lg-0 ml-auto">
             <a class="navbar-brand" href="/">Neighborhood Map</a>
-
-            <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
-            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
         </div>
+
         <form class="form-inline my-2 my-lg-0 ml-auto">
             <span></span>
         </form>
-        <!-- </div> -->
     </nav>
 
-
+    <!-- Sidebar -->
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-        <a href="#">About</a>
-        <a href="#" id="show-listings">Show Listings</a>
-        <a href="#" id="hide-listings">Hide Listings</a>
-        <a href="#">Contact</a>
+        <br>
+        <!-- <br> -->
+        <span class="sidebar-text">Sidebar</span>
+        <br>
+        <!-- <br> -->
+        <!-- Search bar -->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Search</span>
             </div>
             <input type="text" class="form-control" placeholder=" ... Let's go!" aria-label="Loc-Search" aria-describedby="basic-addon1">
         </div>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <!-- Show/hide listing -->
+        <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons">
             <label class="btn btn-secondary active" onclick="showListings()">
               <input type="radio" name="options" id="show-listings-n" autocomplete="off" checked> Show Listings
             </label>
@@ -56,8 +51,8 @@
               <input type="radio" name="options"  id="hide-listings-n" autocomplete="off"> Hide Listings
             </label>
             <br>
+        </div> -->
 
-        </div>
         <!-- List out locations -->
         <br>    
         <!-- <ul class="" data-bind: "foreach: locations">

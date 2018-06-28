@@ -4,97 +4,47 @@ var map;
 var markers = [];
 
 var ViewModel = function () {
-  
-  //       lng: -97.747882
-  this.firstName = ko.observable("abcdef");
-  this.fullName = ko.pureComputed(function () {
-    // Knockout tracks dependencies automatically. It knows that fullName depends on firstName and lastName, because these get called when evaluating fullName.
-    return "Mr. " + this.firstName() + " Fooderberg";
-  }, this);
-  this.foo = ko.observable("foobartest");
-  
-  // Initialize a list of places in Austin, TX.
-  // this.locations = ko.observableArray([{
-    //     title: "Stubb's Bar-B-Q",
-  //     location: {
-    //       lat: 30.268949,
-    //       lng: -97.736112
-    //     }
-    //   },
-    //   {
-      //     title: 'Whole Foods Market',
-  //     location: {
-    //       lat: 30.271080,
-    //       lng: -97.751368
-    //     }
-    //   },
-    //   {
-      //     title: 'Republic Square',
-      //     location: {
-  //       lat: 30.267809,
-  //       lng: -97.747313
-  //     }
-  //   },
-  //   {
-    //     title: 'Wu Chow',
-  //     location: {
-    //       lat: 30.268930,
-  //     }
-  //   },
-  //   {
-    //     title: 'Texas Capitol',  
-  //     location: {
-    //       lat: 30.275796,  
-  //       lng: -97.740415
-  //     }
-  //   }
-  // ]);
-  // console.log(this.locations());
 
-  // console.log('before get', locations);
-  // get_restaurants();
-  // console.log('after_get', locations);
-  
+  // Create a function which will get the top 12 highest rated 
+  // restaurants around Austin, Texas from the Zomato API
+  // This function will also initialize the Google Map after
+  // acquiring and parsing the Zomato restaurant data
   this.get_restaurants = function (callback_initMap) {
-    
-    var count = 12;
-    var lat = 30.268949;
-    var lon = -97.736112;
-    var radius = 5000;
+
+    var count = 12;  // # of results
+    var lat = 30.268949;  //Austin, TX
+    var lon = -97.736112;  //Austin, TX
+    var radius = 5000;  // in meters
     var sort = 'rating';
     var order = 'desc';
     var url = 'https://developers.zomato.com/api/v2.1/search?count=' + count +
-    '&lat=' + lat + '&lon=' + lon + '&radius=' + radius + '&sort=' + sort + '&order=' + order;
+      '&lat=' + lat + '&lon=' + lon + '&radius=' + radius + '&sort=' + sort + '&order=' + order;
 
-    
-    // var response;  
+
+    // Asynchronously get the Zomato data
     $.ajax({
       url: url,
       type: 'GET',
       dataType: 'json',
       success: function (data) {
-        // alert('hello!');
-        // console.log(data);
-        // response = data;
         var locations = parse_zomato(data);
         callback_initMap(locations);
-      },    
+      },
       error: function () {
-        alert('foo!');
-      },    
+        alert('Sorry, the Zomato API is not working right now!');
+      },
       beforeSend: setHeader
-    });    
+    });
     // return locations;
-  }    
-  
-  
+  }
+
+
   // Parse Zomato response and extract necessary info for each restaurant
   function parse_zomato(response) {
     var parsed_restaurants = [];
     var restaurants = response.restaurants;
-    
+
     restaurants.forEach(element => {
-      // console.log(element);
       var temp_restaurant = {
         name: element.restaurant.name,
         cost: element.restaurant.average_cost_for_two / 2,
@@ -103,72 +53,64 @@ var ViewModel = function () {
         img: element.restaurant.featured_image,
         lat: parseFloat(element.restaurant.location.latitude),
         lon: parseFloat(element.restaurant.location.longitude),
-      }  
+      }
       parsed_restaurants.push(temp_restaurant);
-      
-      
-    });  
+    });
     return parsed_restaurants;
-  }  
-  
-  // This function sets the Ajax request header
+  }
+
+
+  // This function sets the user key in the Ajax request header
   function setHeader(xhr) {
     var key = 'ef9cdebf16fb2439540ef6b1fdf77d55';
     xhr.setRequestHeader('user-key', key);
-  }  
-  
+  }
 
+  // initMap initializes the Google Map given an array of locations
   this.initMap = function (locations) {
-    // Constructor creates a new map - only center and zoom are required.
     map = new google.maps.Map(document.getElementById('map'), {
       center: {
-        lat: 30.273943,
-        lng: -97.753997
-      },  
+        lat: 30.260006,
+        lng: -97.754512
+      },
       zoom: 14,
       mapTypeControl: false
-    });  
-    
-    
+    });
+
     var largeInfowindow = new google.maps.InfoWindow();
-    
-    // The following group uses the location array to create an array of markers on initialize.
+
     for (var i = 0; i < locations.length; i++) {
-      // for (var i = 0; i < 3; i++) {
-        // console.log(i, locations[i]);
-        console.log(i, locations[i].lat);
-        // Get the position from the location array.
-        // var position = {lat: locations[i].lat, lon: locations[i].lon};
-        var position = {
-          lat: locations[i].lat,
-          lng: locations[i].lon
-        }  
+      var position = {
+        lat: locations[i].lat,
+        lng: locations[i].lon
+      }
       var title = locations[i].name;
-      // Create a marker per location, and put into markers array.
+      
+      // Create a marker per location
       var marker = new google.maps.Marker({
         position: position,
         title: title,
         animation: google.maps.Animation.DROP,
         id: i,
         map: map
-      });  
+      });
+      
       // Push the marker to our array of markers.
       markers.push(marker);
+
       // Create an onclick event to open an infowindow at each marker.
       marker.addListener('click', function () {
         populateInfoWindow(this, largeInfowindow);
-      });  
-    }  
+      });
+    }
+
     document.getElementById('show-listings').addEventListener('click', showListings);
     document.getElementById('hide-listings').addEventListener('click', hideListings);
-  }  
-  
+  }
+
+  // Get restaurants and initialize the map
   this.get_restaurants(this.initMap);
-  // console.log('after map', locations);
-  
-  // This function populates the infowindow when the marker is clicked. We'll only allow
-  // one infowindow which will open at the marker that is clicked, and populate based
-  // on that markers position.
+
   
   this.bar = ko.observable("foo");
   // console.log(this.bar());
@@ -224,6 +166,9 @@ function closeNav() {
 var response;
 var results;
 
+// This function populates the infowindow when the marker is clicked. We'll only allow
+// one infowindow which will open at the marker that is clicked, and populate based
+// on that markers position.
 populateInfoWindow = function (marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
   if (infowindow.marker != marker) {
