@@ -2,9 +2,10 @@ var map;
 // var locations = get_restaurants();
 // console.log('after get', locations)
 var markers = [];
+var loc;
 
 var ViewModel = function () {
-  
+  var self = this;  
   //       lng: -97.747882
   this.firstName = ko.observable("abcdef");
   this.fullName = ko.pureComputed(function () {
@@ -12,6 +13,7 @@ var ViewModel = function () {
     return "Mr. " + this.firstName() + " Fooderberg";
   }, this);
   this.foo = ko.observable("foobartest");
+  this.locs = ko.observableArray();
   
   // Initialize a list of places in Austin, TX.
   // this.locations = ko.observableArray([{
@@ -76,6 +78,7 @@ var ViewModel = function () {
         // alert('hello!');
         // console.log(data);
         // response = data;
+        // var locations = ko.observableArray(parse_zomato(data));
         var locations = parse_zomato(data);
         callback_initMap(locations);
       },    
@@ -87,7 +90,7 @@ var ViewModel = function () {
     // return locations;
   }    
   
-  
+  this.locations_obs = ko.observableArray([]);
   // Parse Zomato response and extract necessary info for each restaurant
   function parse_zomato(response) {
     var parsed_restaurants = [];
@@ -136,7 +139,7 @@ var ViewModel = function () {
     for (var i = 0; i < locations.length; i++) {
       // for (var i = 0; i < 3; i++) {
         // console.log(i, locations[i]);
-        console.log(i, locations[i].lat);
+        // console.log(i, locations[i].lat);
         // Get the position from the location array.
         // var position = {lat: locations[i].lat, lon: locations[i].lon};
         var position = {
@@ -161,8 +164,13 @@ var ViewModel = function () {
     }  
     document.getElementById('show-listings').addEventListener('click', showListings);
     document.getElementById('hide-listings').addEventListener('click', hideListings);
+    
+    // Store locations in an obserable array
+    self.locs(locations);
+    // loc = self.locations_obs;
+    // console.log(self.locations_obs()[1]);
   }  
-  
+  console.log(this.locations_obs()[1]);
   this.get_restaurants(this.initMap);
   // console.log('after map', locations);
   
@@ -172,7 +180,8 @@ var ViewModel = function () {
   
   this.bar = ko.observable("foo");
   // console.log(this.bar());
-  
+  console.log(this.locations_obs()[1]);
+  loc = this.locs;
 }
 
 
