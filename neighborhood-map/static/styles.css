@@ -115,3 +115,7 @@ html, body {
         display: block;
         transition: 0.5s;        
  }
+
+ .infowindow-title {
+     font-weight: bold;
+ }

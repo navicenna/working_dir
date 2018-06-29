@@ -14,10 +14,10 @@ var ViewModel = function () {
   // acquiring and parsing the Zomato restaurant data
   this.get_restaurants = function (callback_initMap) {
 
-    var count = 12;  // # of results
-    var lat = 30.268949;  //Austin, TX
-    var lon = -97.736112;  //Austin, TX
-    var radius = 5000;  // in meters
+    var count = 12; // # of results
+    var lat = 30.268949; //Austin, TX
+    var lon = -97.736112; //Austin, TX
+    var radius = 5000; // in meters
     var sort = 'rating';
     var order = 'desc';
     var url = 'https://developers.zomato.com/api/v2.1/search?count=' + count +
@@ -39,8 +39,8 @@ var ViewModel = function () {
       beforeSend: setHeader
     });
     // return locations;
-  }    
-  
+  }
+
   this.locations_obs = ko.observableArray([]);
   // Parse Zomato response and extract necessary info for each restaurant
   function parse_zomato(response) {
@@ -88,16 +88,20 @@ var ViewModel = function () {
         lng: locations[i].lon
       }
       var title = locations[i].name;
-      
+
       // Create a marker per location
       var marker = new google.maps.Marker({
         position: position,
         title: title,
         animation: google.maps.Animation.DROP,
         id: i,
-        map: map
+        map: map,
+        cuisines: locations[i].cuisines,
+        cost: locations[i].cost,
+        img: locations[i].img,
+        rating: locations[i].rating,
       });
-      
+
       // Push the marker to our array of markers.
       markers.push(marker);
 
@@ -109,16 +113,16 @@ var ViewModel = function () {
 
     // document.getElementById('show-listings').addEventListener('click', showListings);
     // document.getElementById('hide-listings').addEventListener('click', hideListings);
-    
+
     // Store locations in an obserable array
     self.locs(locations);
     // loc = self.locations_obs;
     // console.log(self.locations_obs()[1]);
-  }  
+  }
   console.log(this.locations_obs()[1]);
   this.get_restaurants(this.initMap);
 
-  
+
   this.bar = ko.observable("foo");
   // console.log(this.bar());
   console.log(this.locations_obs()[1]);
@@ -153,11 +157,6 @@ function openNav() {
 
 function toggleNav() {
   $("#mySidenav").toggleClass("collapsed");
-  var foo = 1;
-  foo = 2;
-  var bar = document.getElementById("mySidenav").classList;
-  // console.log(bar);
-  // document.getElementById("main").style.marginLeft = "320px";
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
@@ -181,8 +180,28 @@ populateInfoWindow = function (marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
   if (infowindow.marker != marker) {
     infowindow.marker = marker;
-    infowindow.setContent('<div>' + marker.title + '</div>');
-    infowindow.open(map, marker);
+    var content = `<div> <span class="infowindow-title"> ${marker.title}</span><br><br>
+    <span>Cost: ${marker.cost}</span><br>
+    <span>Cuisines: ${marker.cuisines}</span><br>
+    <span>Rating: ${marker.rating}</span><br><br>
+    <img src="${marker.img}" alt="restaurant pic" height="111">
+
+    
+    
+    </div>
+    `;
+    console.log(`"${marker.img}"`)
+    infowindow.setContent(content);
+    var imageObj = new Image();
+    imageObj.src = marker.img;
+    imageObj.onload = function () {
+      infowindow.open(map, marker);
+    };
+    infowindow.marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout((function () {
+      infowindow.marker.setAnimation(null);
+    }).bind(infowindow.marker), 1900)
+    // infowindow.open(map, marker);
     // Make sure the marker property is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function () {
       infowindow.marker = null;
