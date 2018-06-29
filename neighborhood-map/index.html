@@ -31,10 +31,10 @@
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <br>
-        <!-- <br> -->
-        <span class="sidebar-text">Sidebar</span>
+        <span class="sidebar-text">Top Restaurants in Austin</span>
         <br>
-        <!-- <br> -->
+        <br>
+
         <!-- Search bar -->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -42,39 +42,14 @@
             </div>
             <input type="text" class="form-control" placeholder=" ... Let's go!" aria-label="Loc-Search" aria-describedby="basic-addon1">
         </div>
-        <!-- Show/hide listing -->
-        <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-secondary active" onclick="showListings()">
-              <input type="radio" name="options" id="show-listings-n" autocomplete="off" checked> Show Listings
-            </label>
-            <label class="btn btn-secondary" onclick="hideListings()">
-              <input type="radio" name="options"  id="hide-listings-n" autocomplete="off"> Hide Listings
-            </label>
-            <br>
-        </div> -->
 
         <!-- List out locations -->
-        <br>    
-        <!-- <ul class="" data-bind: "foreach: locations">
-            <li class="" data-bind: "text: title"></li>
-        </ul> -->
-        <!-- <span data-bind:="text: foo"></span>
-        <span data-bind:="text: foo">test</span>
-        <span data-bind:="text: bar"></span> -->
         <br>
+        <div data-bind="foreach: locs" class="">
+            <span class="sidebar-text" data-bind="text: name"></span>
+        </div>
 
-        <!-- <p class="info">First name: <input data-bind="value: firstName" /></p> -->
-        <!-- <h2 class="info">Hello, <span data-bind="text: fullName"> </span>!</h2> -->
-        <br>
-        <span class="info" data-bind="text: fullName"></span>
-        <br>
-        <span class="info" data-bind="text: fullName"></span>
-        <br>
-        <!-- <div data-bind="foreach: locations"> -->
-            <!-- <a class="info22" data-bind="text: title"></span> -->
-        <!-- </div> -->
-
-    </div>
+   </div>
 
     <!-- Use any element to open the sidenav -->
     <!-- <span >open</span> -->

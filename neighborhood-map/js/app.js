@@ -5,6 +5,8 @@ var markers = [];
 var loc;
 
 var ViewModel = function () {
+  var self = this;
+  this.locs = ko.observableArray([]);
 
   // Create a function which will get the top 12 highest rated 
   // restaurants around Austin, Texas from the Zomato API
@@ -105,8 +107,8 @@ var ViewModel = function () {
       });
     }
 
-    document.getElementById('show-listings').addEventListener('click', showListings);
-    document.getElementById('hide-listings').addEventListener('click', hideListings);
+    // document.getElementById('show-listings').addEventListener('click', showListings);
+    // document.getElementById('hide-listings').addEventListener('click', hideListings);
     
     // Store locations in an obserable array
     self.locs(locations);
