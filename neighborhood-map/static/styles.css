@@ -36,19 +36,15 @@ html, body {
 
 /* The navigation menu links */
 .sidenav a {
-    padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 25px;
-    color: #bbbbbb;
-    display: block;
     transition: 0.3s;
 }
 
 /* Sidebar text */
 .sidebar-text {
     /* padding: 8px 8px 8px 8px; */
-    font-size: 14px;
-    color: #ffffff;
+    font-size: 1.2em;
+    color: #dddddd;
     display: block;
 }
 /* The navigation menu links */
@@ -72,6 +68,10 @@ html, body {
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
+    padding: 8px 8px 8px 32px;
+    /* font-size: 25px; */
+    color: #bbbbbb;
+    display: block;
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
