@@ -198,10 +198,7 @@ populateInfoWindow = function (marker, infowindow) {
     <span>Cost: ${marker.cost}</span><br>
     <span>Cuisines: ${marker.cuisines}</span><br>
     <span>Rating: ${marker.rating}</span><br><br>
-    <img src="${marker.img}" alt="restaurant pic" height="111">
-
-    
-    
+    <img src="${marker.img}" alt="restaurant pic" height="111">    
     </div>
     `;
     console.log(`"${marker.img}"`)
