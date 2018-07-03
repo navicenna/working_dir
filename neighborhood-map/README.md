@@ -12,6 +12,7 @@ SOURCES
 
 - Some code adapted from Udacity lessons
 - Collapsable sidebar inspired by tutorial here: https://www.w3schools.com/howto/howto_js_sidenav.asp
+- Zomato API documentation
 - Viewed gmawji's neighborhood map project on Github to see
 a live example of knockoutJS used as a ModelView to the Google Maps API: https://github.com/gmawji/neighborhood-map
 
