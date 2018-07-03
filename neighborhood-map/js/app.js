@@ -195,8 +195,8 @@ populateInfoWindow = function (marker, infowindow) {
   if (infowindow.marker != marker) {
     infowindow.marker = marker;
     var content = `<div> <span class="infowindow-title"> ${marker.title}</span><br><br>
-    <span>Cost: ${marker.cost}</span><br>
-    <span>Cuisines: ${marker.cuisines}</span><br>
+    <span>Average Cost:  $${marker.cost} per person</span><br>
+    <span>Cuisines:  ${marker.cuisines}</span><br>
     <span>Rating: ${marker.rating}</span><br><br>
     <img src="${marker.img}" alt="restaurant pic" height="111">    
     </div>
